@@ -1,0 +1,138 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+apply from: "${rootProject.projectDir}/build-configuration.gradle"
+
+android {
+    compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debugRelease {
+            debuggable true
+        }
+
+        debug {
+            debuggable true
+        }
+
+        allvariants {
+            buildConfigField "String", 'VERSION_CODE',  "\"${versions.appVersionCode}\""
+            buildConfigField "String", 'VERSION_NAME',  "\"${versions.appVersionName}\""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+configurations {
+    testApiDependencies.extendsFrom testApi
+    androidTestApiDependencies.extendsFrom androidTestApi
+}
+
+dependencies {
+    // Crashlytics
+    api platform("com.google.firebase:firebase-bom:27.1.0")
+    api "com.google.firebase:firebase-crashlytics-ktx"
+    api ("com.google.firebase:firebase-analytics-ktx") {
+        exclude module: "play-services-ads-identifier"
+        exclude module: "play-services-measurement"
+        exclude module: "play-services-measurement-sdk"
+    }
+
+    // Firebase
+    api platform('com.google.firebase:firebase-bom:27.1.0')
+    api 'com.google.firebase:firebase-crashlytics-ktx'
+    api 'com.google.firebase:firebase-analytics-ktx'
+
+    api 'androidx.core:core-ktx:1.9.0'
+    api 'androidx.appcompat:appcompat:1.5.1'
+    api 'com.google.android.material:material:1.7.0'
+
+    api 'androidx.core:core-ktx:1.9.0'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+
+    // Compose
+    api "androidx.compose.ui:ui:$compose_version"
+    api "androidx.compose.material:material:$compose_version"
+    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    api 'androidx.activity:activity-compose:1.6.1'
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+
+    // Coroutines
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    // Coroutine Lifecycle Scopes
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    // Dagger - Hilt
+    def hilt_version = "2.44"
+    api "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    api 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    api 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
+    // Retrofit
+    def retrofit_version = "2.9.0"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    def okhttp3_version = "5.0.0-alpha.2"
+    api "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+
+    // Room
+    def room_version = "2.4.3"
+    api "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    // Kotlin Extensions and Coroutines support for Room
+    api "androidx.room:room-ktx:$room_version"
+
+
+    // UNIT TEST
+    testApi "org.junit.jupiter:junit-jupiter-api:5.8.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.0"
+    testApi "junit:junit:4.13.2"
+    testApi 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+    testApi "androidx.arch.core:core-testing:2.1.0"
+    testApi 'androidx.test:monitor:1.4.0'
+
+
+    // INSTRUMENTATION TEST
+    androidTestApi 'androidx.test.ext:junit:1.1.4'
+    androidTestApi 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
+    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
+}

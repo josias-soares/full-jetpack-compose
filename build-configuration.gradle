@@ -1,0 +1,148 @@
+ext {
+    def APP_VERSION_CODE = 91
+    def APP_VERSION_NAME = "3.36"
+    def TRAFFIC_ROUTE = "v2a"
+    def TRAFFIC_VERSION = "${APP_VERSION_NAME}.Android"
+
+    urlConfig = [
+            MOCK_API_URL               : '"http://' + getLocalIPv4()[0] + ':3000"',
+            PIPELINE_QA_API_URL        : '"https://api.test.cartoesunicred.com.br/mobile-app-gateway-mock/"',
+            LOCAL_QA_API_URL           : '"http://' + getLocalIPv4()[0] + ':18082"',
+            BASE_URL_RELEASE           : '"https://mobile-app-gateway.cartoesunicred.com.br"',
+            BASE_URL_DEBUG             : '"https://mobile-app-gateway.test.cartoesunicred.com.br"',
+            UNICRED_REWARDS_URL_DEBUG  : '"https://unicred.qa.luxuryloyalty.com/unicred"',
+            UNICRED_REWARDS_URL_RELEASE: '"https://unicred.luxuryloyalty.com"'
+    ]
+
+    UNICRED_DEBUG_SSL_FINGERPRINTS = 'new String[] {"78:46:2C:94:C4:F9:F5:16:F4:81:88:1F:3E:04:5B:3C:2F:DF:D9:19", "98:B5:FB:F3:27:96:FA:62:3D:4D:EB:F1:85:A2:F8:DF:3C:92:F6:17"}'
+    UNICRED_RELEASE_SSL_FINGERPRINTS = 'new String[] {"99:B3:E7:BD:78:6C:B8:0B:F9:7A:9E:A8:5B:CF:B3:4B:36:96:0E:98", "58:05:16:C5:30:F6:42:6B:E5:8E:39:0D:A9:6C:F1:78:7D:88:F7:4B"}'
+    AILOS_DEBUG_SSL_FINGERPRINTS = 'new String[] {"B4:9F:96:F8:E7:76:22:01:7F:DB:08:01:E8:61:94:A4:AF:85:16:D8"}'
+    AILOS_RELEASE_SSL_FINGERPRINTS = 'new String[] {"B4:9F:96:F8:E7:76:22:01:7F:DB:08:01:E8:61:94:A4:AF:85:16:D8"}'
+
+    headerConfig = [
+            TRAFFIC_ROUTE              : "\"$TRAFFIC_ROUTE\"",
+            TRAFFIC_VERSION            : "\"$TRAFFIC_VERSION\"",
+            HEADER_TRAFFIC_CODE_UNICRED: '"136"',
+            HEADER_TRAFFIC_CODE_AILOS  : '"85"'
+    ]
+
+    versions = [
+            compileSdkVersion: 33,
+            buildToolsVersion: "31.0.0",
+            minSdkVersion    : 23,
+            targetSdkVersion : 33,
+            appVersionCode   : APP_VERSION_CODE,
+            appVersionName   : APP_VERSION_NAME
+    ]
+
+    chatBot = [
+            UBOTS_JID      : '"atendimento-visa"',
+            UBOTS_JID_DEBUG: '"atendimento-visa-teste"'
+    ]
+}
+
+ext.flavorConfig = {
+    flavorDimensions "default"
+
+    productFlavors {
+        unicred {
+            dimension 'default'
+            applicationId 'com.mahhaus.unicredvisa'
+            buildConfigField "String", 'TRAFFIC_ROUTE', headerConfig.TRAFFIC_ROUTE
+            buildConfigField "String", 'TRAFFIC_VERSION',  headerConfig.TRAFFIC_VERSION
+            buildConfigField "String", 'TRAFFIC_CODE', headerConfig.HEADER_TRAFFIC_CODE_UNICRED
+
+            buildConfigField "String", 'VERSION_CODE',  versions.appVersionCode
+            buildConfigField "String", 'VERSION_NAME',  versions.appVersionName
+            //buildConfigField "String", 'WALLET_CLIENT_APP_ID', '"unicredPushAndroid"'
+        }
+    }
+}
+
+ext.buildTypesConfig = {
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debugRelease {
+            debuggable true
+        }
+
+        debugPipelineQA {
+            debuggable true
+        }
+
+        debugLocalQA {
+            debuggable true
+        }
+
+        debugMock {
+            debuggable true
+        }
+
+        debug {
+            debuggable true
+        }
+    }
+}
+
+ext.featureConfig = {
+    defaultAndroidConfig
+    flavorConfig
+    buildTypesConfig
+    compileConfig
+}
+
+ext.defaultAndroidConfig = {
+    defaultConfig {
+        minSdk versions.minSdkVersion
+        targetSdk versions.targetSdkVersion
+        versionCode versions.appVersionCode
+        versionName versions.appVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+}
+
+ext.compileConfig = {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion '1.0.5'
+    }
+}
+
+//return all v4 addresses
+static def getLocalIPv4() {
+    def ip4s = []
+    NetworkInterface.getNetworkInterfaces()
+            .findAll { it.isUp() && !it.isPointToPoint() && !it.isLoopback() && !it.isVirtual() }
+            .each {
+                it.getInetAddresses()
+                        .findAll { !it.isLoopbackAddress() && it instanceof Inet4Address }
+                        .each { ip4s << it }
+            }
+
+    return ip4s
+}

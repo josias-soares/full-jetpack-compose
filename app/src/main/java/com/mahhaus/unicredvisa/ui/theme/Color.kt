@@ -2,7 +2,10 @@ package com.mahhaus.unicredvisa.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val PrimaryLight = Color(0xFF008D6A)
+val PrimaryVariantLight = Color(0xFF3700B3)
+val SecondaryLight = Color(0xFF003C2F)
+
+val PrimaryDark = Color(0xFF008D6A)
+val PrimaryVariantDark = Color(0xFF3700B3)
+val SecondaryDark = Color(0xFF003C2F)
