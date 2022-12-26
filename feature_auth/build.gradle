@@ -1,0 +1,26 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "${rootProject.projectDir}/build-configuration.gradle"
+
+android {
+    compileSdk versions.compileSdkVersion
+    buildToolsVersion versions.buildToolsVersion
+
+    featureConfig
+}
+
+dependencies {
+    implementation project(':lib_core')
+
+    // UNIT TEST
+    testImplementation "junit:junit:4.13.2"
+
+    // INSTRUMENTATION TEST
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+//    testImplementation project(configuration: 'testApiDependencies', path: ':lib_core')
+//    testImplementation project(configuration: 'androidTestApiDependencies', path: ':lib_core')
+}

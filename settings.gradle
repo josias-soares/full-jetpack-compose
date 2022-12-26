@@ -17,4 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "Unicred"
 include ':app'
 include ':lib_core'
+include ':feature_auth'
 include ':feature_invoice'

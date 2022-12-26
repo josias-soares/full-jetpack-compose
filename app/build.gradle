@@ -110,5 +110,13 @@ android {
 dependencies {
 
     implementation project(':lib_core')
-    //testImplementation project(configuration: 'commonTestDependencies', path: ':lib_core')
+
+    // UNIT TEST
+    testImplementation "junit:junit:4.13.2"
+
+    // INSTRUMENTATION TEST
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+//    testImplementation project(configuration: 'testApiDependencies', path: ':lib_core')
+//    testImplementation project(configuration: 'androidTestApiDependencies', path: ':lib_core')
 }

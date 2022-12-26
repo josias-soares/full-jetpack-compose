@@ -47,7 +47,7 @@ ext.flavorConfig = {
     productFlavors {
         unicred {
             dimension 'default'
-            applicationId 'com.mahhaus.unicredvisa'
+            applicationId 'br.com.unicredvisa'
             buildConfigField "String", 'TRAFFIC_ROUTE', headerConfig.TRAFFIC_ROUTE
             buildConfigField "String", 'TRAFFIC_VERSION',  headerConfig.TRAFFIC_VERSION
             buildConfigField "String", 'TRAFFIC_CODE', headerConfig.HEADER_TRAFFIC_CODE_UNICRED

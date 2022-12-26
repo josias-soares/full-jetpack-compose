@@ -1,4 +1,4 @@
-package com.mahhaus.unicredvisa.ui.theme
+package br.com.unicredvisa.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

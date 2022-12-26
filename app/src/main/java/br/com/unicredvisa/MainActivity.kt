@@ -1,4 +1,4 @@
-package com.mahhaus.unicredvisa
+package br.com.unicredvisa
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.mahhaus.unicredvisa.ui.theme.UnicredVisaTheme
+import br.com.unicredvisa.ui.theme.UnicredVisaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.mahhaus.feature_invoice
+package br.com.unicredvisa.feature_invoice
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -18,6 +18,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.mahhaus.feature_invoice.test", appContext.packageName)
+        assertEquals("br.com.unicredvisa.feature_invoice.test", appContext.packageName)
     }
 }
